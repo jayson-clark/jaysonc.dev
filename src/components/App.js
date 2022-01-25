@@ -1,6 +1,6 @@
 import './App.css';
 
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 
 firebase.initializeApp({
     apiKey: "AIzaSyDPaFClETBTNgX_NSF2dmLFN8vtW96VmBM",
