@@ -1,23 +1,24 @@
-import './App.css';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import firebase from 'firebase/compat/app';
+import '../styles/main.css';
 
-firebase.initializeApp({
-    apiKey: "AIzaSyDPaFClETBTNgX_NSF2dmLFN8vtW96VmBM",
-    authDomain: "jaysonc-dev.firebaseapp.com",
-    projectId: "jaysonc-dev",
-    storageBucket: "jaysonc-dev.appspot.com",
-    messagingSenderId: "53708482599",
-    appId: "1:53708482599:web:d16c45184aa5d05005c602",
-    measurementId: "G-BMPERF6LEH"
-});
+import NavMenu from './root/NavMenu';
+import BackgroundCanvas from './root/BackgroundCanvas';
 
-function App() {
-    return (
-        <div className="App">
-            Hello, world!
-        </div>
-    );
-}
+import Home from './pages/Home';
+import Projects from './pages/Projects';
+
+const App = () => <BrowserRouter>
+  <NavMenu />
+  <BackgroundCanvas />
+
+  <Routes>
+    <Route path="/" element={<Home />} />
+    <Route path="/projects" element={<Projects />} />
+  </Routes>
+
+</BrowserRouter>;
+
 
 export default App;
