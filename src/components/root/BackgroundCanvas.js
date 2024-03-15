@@ -6,7 +6,6 @@ const MAX_VELOCITY_X = 50;
 const MIN_VELOCITY_Y = -50;
 const MAX_VELOCITY_Y = 50;
 
-// const NUM_POINTS = ((document.body.clientHeight * document.body.clientWidth) / (1070 * 1806)) * 150;
 const NUM_POINTS = 150;
 const CIRCLE_RADIUS = 2;
 const LINE_DISTANCE = 60;
@@ -57,27 +56,11 @@ const drawLine = (context, x1, y1, x2, y2, brightness = 1.0) => {
 
 
 // Function to update and draw the animation frame
-const updateAndDraw = (context, points, cursorPosRef, mouseDownRef, lastTimestamp) => {
+const updateAndDraw = (context, points, lastTimestamp) => {
     const currentTimestamp = performance.now();
     const deltaTime = (currentTimestamp - lastTimestamp) / 1000; // Convert to seconds
 
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-
-    // Check for proximity to the cursor and draw lines
-    if (mouseDownRef.current) {
-        points.forEach(point => {
-            const dx = point.x - cursorPosRef.current.x;
-            const dy = point.y - cursorPosRef.current.y;
-            const distanceToCursor = Math.hypot(dx, dy);
-
-            if (distanceToCursor < INFLUENCE_RADIUS) {
-                const influenceFactor = (INFLUENCE_RADIUS - distanceToCursor) / INFLUENCE_RADIUS;
-
-                point.vx += dx * influenceFactor;
-                point.vy += dy * influenceFactor;
-            }
-        });
-    }
 
     // Check for proximity and draw lines
     points.forEach((point1, index1) => {
@@ -103,7 +86,7 @@ const updateAndDraw = (context, points, cursorPosRef, mouseDownRef, lastTimestam
         });
     });
 
-    // Update and draw circles
+    // Update and draw "stars"
     points.forEach(point => {
         point.x += point.vx * deltaTime;
         point.y += point.vy * deltaTime;
@@ -131,14 +114,12 @@ const updateAndDraw = (context, points, cursorPosRef, mouseDownRef, lastTimestam
     });
 
     // Request the next animation frame
-    requestAnimationFrame(() => updateAndDraw(context, points, cursorPosRef, mouseDownRef, currentTimestamp));
+    requestAnimationFrame(() => updateAndDraw(context, points, currentTimestamp));
 };
 
 // Main component for the background canvas
 const BackgroundCanvas = () => {
     const canvasRef = useRef(null);
-    const cursorPosRef = useRef({ x: 0, y: 0 });
-    const mouseDown = useRef(false);
 
     useEffect(() => {
         // Set up canvas and context
@@ -156,7 +137,7 @@ const BackgroundCanvas = () => {
 
         // Request the first animation frame
         const animationId = requestAnimationFrame(() =>
-            updateAndDraw(context, randomPoints, cursorPosRef, mouseDown, startTimestamp)
+            updateAndDraw(context, randomPoints, startTimestamp)
         );
 
         // Add resize event listener
@@ -165,17 +146,6 @@ const BackgroundCanvas = () => {
             canvas.width = canvas.clientWidth;
             canvas.height = canvas.clientHeight;
         });
-
-        // Add mouse movement listener
-        window.addEventListener('mousemove', (event) => {
-            cursorPosRef.current = {
-                x: event.clientX - canvas.getBoundingClientRect().left,
-                y: event.clientY - canvas.getBoundingClientRect().top,
-            };
-        });
-
-        window.addEventListener("mousedown", () => mouseDown.current = true);
-        window.addEventListener("mouseup", () => mouseDown.current = false);
 
         // Cleanup function to cancel animation frame on component unmount
         return () => cancelAnimationFrame(animationId);
