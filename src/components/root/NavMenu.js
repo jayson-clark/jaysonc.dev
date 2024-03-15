@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faCode } from '@fortawesome/free-solid-svg-icons';
-
 import '../../styles/root/NavMenu.css';
 
 const NavMenu = () => {
@@ -12,13 +9,26 @@ const NavMenu = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const children = document.querySelectorAll('#nav a');
-    const singleHeight = [...children][1].offsetHeight;
-    const allHeight = [...children].length * singleHeight;
+    const navElement = document.getElementById('nav');
+    const resizeObserver = new ResizeObserver(entries => {
+      calculateNavHeight();
+    });
 
-    isHovered ? setNavHeight(`${allHeight}px`) : setNavHeight(`${singleHeight}px`);
+    resizeObserver.observe(navElement);
 
+    return () => resizeObserver.unobserve(navElement);
   }, [isHovered]);
+
+  // Function to calculate and set navigation height
+  const calculateNavHeight = () => {
+    const children = document.querySelectorAll('#nav a');
+    if (children.length > 0) {
+      const singleHeight = children[1].offsetHeight;
+      const allHeight = children.length * singleHeight;
+      const newHeight = isHovered ? `${allHeight}px` : `${singleHeight}px`;
+      setNavHeight(newHeight);
+    }
+  };
 
   return (
     <div
@@ -27,10 +37,10 @@ const NavMenu = () => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <Link to="/" className={location.pathname === '/' ? 'active' : ''}>
-        <FontAwesomeIcon icon={faHouse} />
+        <i className="fa-solid fa-house" />
       </Link>
       <Link to="/projects" className={location.pathname === '/projects' ? 'active' : ''}>
-        <FontAwesomeIcon icon={faCode} />
+        <i className="fa-solid fa-code" />
       </Link>
     </div>
   );
