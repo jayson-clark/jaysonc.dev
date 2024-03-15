@@ -1,7 +1,7 @@
 :root {
   --background-color: #1A1A1D;
 
-  --foreground-color: #4E4E50;
+  --foreground-color: #707070;
   --text-color: #fff;
 
   --dark-accent: #6F2232;
@@ -17,8 +17,7 @@ body {
   margin: 0;
 
   font-family: Arial;
-
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .content {
@@ -35,6 +34,22 @@ canvas {
   height: 100vh;
   top: 0;
   left: 0;
-  position: absolute;
+  position: fixed;
   z-index: -1;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--foreground-color);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: inherit;
+  border-radius: 6px;
 }

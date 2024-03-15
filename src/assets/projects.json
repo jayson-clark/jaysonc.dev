@@ -1,55 +1,61 @@
 {
     "0": {
-        "id": "0",
-        "name": "Project 1",
-        "short_description": "Testing project 1 test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test",
+        "name": "Portfolio Site",
+        "image_url": "/assets/images/projects/portfolio.png",
+        "short_description": "This website.",
         "tags": [
-            {
-                "name": "C++",
-                "color": "#F00"
-            },
-            {
-                "name": "Web",
-                "color": "#0F0"
-            },
-            {
-                "name": "Web",
-                "color": "#0F0"
-            }
+            "React",
+            "Web"
         ],
         "links": [
             {
-                "url": "https://google.com",
-                "icon": "globe"
+                "url": "https://github.com/jayson-clark/jaysonc.dev",
+                "icon": "fa-brands fa-github"
             },
             {
-                "url": "https://google.com",
-                "icon": "github"
+                "url": "https://jaysonc.dev",
+                "icon": "fa-solid fa-globe"
             }
         ]
     },
     "1": {
-        "id": "1",
-        "name": "Project 2",
+        "name": "EcoToss",
+        "image_url": "/assets/images/projects/ecotoss.png",
+        "short_description": "Recycling style cup pong built with a custom graphics engine.",
         "links": [],
-        "tags": []
+        "tags": [
+            "C++",
+            "Games"
+        ]
     },
     "2": {
-        "id": "2",
-        "name": "Project 3",
+        "name": "EcoToss",
+        "image_url": "/assets/images/projects/ecotoss.png",
+        "short_description": "Recycling style cup pong built with a custom graphics engine.",
         "links": [],
-        "tags": []
+        "tags": [
+            "C++",
+            "Games"
+        ]
     },
     "3": {
-        "id": "3",
-        "name": "Project 4",
+        "name": "EcoToss",
+        "image_url": "/assets/images/projects/ecotoss.png",
+        "short_description": "Recycling style cup pong built with a custom graphics engine.",
         "links": [],
-        "tags": []
+        "tags": [
+            "C++",
+            "Games"
+        ]
     },
     "4": {
-        "id": "4",
-        "name": "Project 5",
+        "name": "EcoToss",
+        "image_url": "/assets/images/projects/ecotoss.png",
+        "short_description": "Recycling style cup pong built with a custom graphics engine.",
         "links": [],
-        "tags": []
+        "tags": [
+            "C++",
+            "Games"
+        ]
     }
 }
