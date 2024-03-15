@@ -6,9 +6,12 @@ const MAX_VELOCITY_X = 50;
 const MIN_VELOCITY_Y = -50;
 const MAX_VELOCITY_Y = 50;
 
+// const NUM_POINTS = ((document.body.clientHeight * document.body.clientWidth) / (1070 * 1806)) * 150;
 const NUM_POINTS = 150;
 const CIRCLE_RADIUS = 2;
-const LINE_THRESHOLD_DISTANCE = 80;
+const LINE_DISTANCE = 60;
+
+const INFLUENCE_RADIUS = 80;
 
 // Function to generate random coordinates with velocities
 const generateRandomCoordinates = (numPoints, minX, maxX, minY, maxY) => {
@@ -34,9 +37,17 @@ const drawCircle = (context, x, y) => {
     context.fill();
 };
 
-// Function to draw a line between two points
-const drawLine = (context, x1, y1, x2, y2) => {
-    context.strokeStyle = '#950740';
+// Function to draw a line between two points with adjustable brightness
+const drawLine = (context, x1, y1, x2, y2, brightness = 1.0) => {
+    let r = 149, g = 7, b = 64;
+
+    // Adjust brightness
+    r = Math.min(255, r * brightness);
+    g = Math.min(255, g * brightness);
+    b = Math.min(255, b * brightness);
+
+    // Apply adjusted color
+    context.strokeStyle = `rgb(${r}, ${g}, ${b})`;
     context.lineWidth = 2;
     context.beginPath();
     context.moveTo(x1, y1);
@@ -44,20 +55,50 @@ const drawLine = (context, x1, y1, x2, y2) => {
     context.stroke();
 };
 
+
 // Function to update and draw the animation frame
-const updateAndDraw = (context, points, lastTimestamp) => {
+const updateAndDraw = (context, points, cursorPosRef, mouseDownRef, lastTimestamp) => {
     const currentTimestamp = performance.now();
     const deltaTime = (currentTimestamp - lastTimestamp) / 1000; // Convert to seconds
 
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
+    // Check for proximity to the cursor and draw lines
+    if (mouseDownRef.current) {
+        points.forEach(point => {
+            const dx = point.x - cursorPosRef.current.x;
+            const dy = point.y - cursorPosRef.current.y;
+            const distanceToCursor = Math.hypot(dx, dy);
+
+            if (distanceToCursor < INFLUENCE_RADIUS) {
+                const influenceFactor = (INFLUENCE_RADIUS - distanceToCursor) / INFLUENCE_RADIUS;
+
+                point.vx += dx * influenceFactor;
+                point.vy += dy * influenceFactor;
+            }
+        });
+    }
+
     // Check for proximity and draw lines
     points.forEach((point1, index1) => {
         points.slice(index1 + 1).forEach(point2 => {
-            const distance = Math.hypot(point1.x - point2.x, point1.y - point2.y);
+            const dx = point1.x - point2.x;
+            const dy = point1.y - point2.y;
+            const distance = Math.hypot(dx, dy);
 
-            if (distance < LINE_THRESHOLD_DISTANCE) {
-                drawLine(context, point1.x, point1.y, point2.x, point2.y);
+            if (distance <= LINE_DISTANCE) {
+                let brightness = 1 - (distance / LINE_DISTANCE);
+
+                // Enforce a minimum brightness of 0.4
+                brightness = (brightness <= 0.6) ? brightness + 0.4 : brightness;
+
+                drawLine(context, point1.x, point1.y, point2.x, point2.y, brightness);
+
+                point1.vx += dx / 50;
+                point1.vy += dy / 50;
+
+                point2.vx += -1 * dx / 50;
+                point2.vy += -1 * dy / 50;
             }
         });
     });
@@ -67,19 +108,37 @@ const updateAndDraw = (context, points, lastTimestamp) => {
         point.x += point.vx * deltaTime;
         point.y += point.vy * deltaTime;
 
-        if (point.x >= context.canvas.width || point.x <= 0) point.vx = -1 * point.vx;
-        if (point.y >= context.canvas.height || point.y <= 0) point.vy = -1 * point.vy;
+        if (point.x >= context.canvas.width + 5 || point.x <= -5 ||
+            point.y >= context.canvas.height + 5 || point.y <= -5) {
+            const x = Math.random() * context.canvas.width;
+            const y = Math.random() * context.canvas.height;
+
+            point.x = x;
+            point.y = y;
+        }
+
+        if (point.x >= context.canvas.width || point.x <= 0) {
+            point.vx = -1 * point.vx;
+            point.x = (point.x < 0) ? 5 : context.canvas.width - 5;
+        }
+
+        if (point.y >= context.canvas.height || point.y <= 0) {
+            point.vy = -1 * point.vy;
+            point.y = (point.y < 0) ? 5 : context.canvas.height - 5;
+        }
 
         drawCircle(context, point.x, point.y);
     });
 
     // Request the next animation frame
-    requestAnimationFrame(() => updateAndDraw(context, points, currentTimestamp));
+    requestAnimationFrame(() => updateAndDraw(context, points, cursorPosRef, mouseDownRef, currentTimestamp));
 };
 
 // Main component for the background canvas
 const BackgroundCanvas = () => {
     const canvasRef = useRef(null);
+    const cursorPosRef = useRef({ x: 0, y: 0 });
+    const mouseDown = useRef(false);
 
     useEffect(() => {
         // Set up canvas and context
@@ -97,14 +156,32 @@ const BackgroundCanvas = () => {
 
         // Request the first animation frame
         const animationId = requestAnimationFrame(() =>
-            updateAndDraw(context, randomPoints, startTimestamp)
+            updateAndDraw(context, randomPoints, cursorPosRef, mouseDown, startTimestamp)
         );
+
+        // Add resize event listener
+        window.addEventListener('resize', () => {
+            const canvas = canvasRef.current;
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+        });
+
+        // Add mouse movement listener
+        window.addEventListener('mousemove', (event) => {
+            cursorPosRef.current = {
+                x: event.clientX - canvas.getBoundingClientRect().left,
+                y: event.clientY - canvas.getBoundingClientRect().top,
+            };
+        });
+
+        window.addEventListener("mousedown", () => mouseDown.current = true);
+        window.addEventListener("mouseup", () => mouseDown.current = false);
 
         // Cleanup function to cancel animation frame on component unmount
         return () => cancelAnimationFrame(animationId);
     }, []);
 
-    return <canvas ref={canvasRef} width={400} height={400} />;
+    return <canvas ref={canvasRef} />;
 };
 
 export default BackgroundCanvas;
