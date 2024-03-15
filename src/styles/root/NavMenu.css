@@ -12,6 +12,8 @@
     transition: height 0.6s ease;
 
     background-color: var(--background-color);
+    box-shadow: 0 0 6px 6px rgba(0, 0, 0, .3);
+
 }
 
 .nav a {
