@@ -8,7 +8,6 @@ import { Hero } from "./sections/Hero";
 import { Experience } from "./sections/Experience";
 import { Projects } from "./sections/Projects";
 import { Coursework } from "./sections/Coursework";
-import { profile } from "./data";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -50,10 +49,6 @@ export function App() {
         <Projects />
         <Coursework />
       </main>
-      <footer>
-        © {new Date().getFullYear()} {profile.name} · Built with React, GSAP,
-        and a hand-rolled circuit canvas.
-      </footer>
     </>
   );
 }

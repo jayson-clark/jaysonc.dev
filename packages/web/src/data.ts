@@ -1,13 +1,13 @@
 export const profile = {
   name: "Jayson Clark",
-  role: "Software Engineer · CS Student",
+  role: "Software Engineer · CS & Math Student",
   intro:
-    "I'm a computer science student who loves building expressive, performant software — from graphics and tooling to full-stack web apps. Currently focused on systems programming, interactive visuals, and shipping polished side projects.",
+    "I'm a computer science and mathematics student at The Ohio State University who loves building systems from the ground up. I'm especially interested in systems programming, graphics, networking, embedded systems, and full-stack software, and I enjoy turning ambitious ideas into polished, working projects.",
   email: "jayson.clark0421@gmail.com",
-  photoUrl: "", // put a path like "/me.jpg" in packages/web/public/ to show your photo
+  photoUrl: "/me.jpeg", // put a path like "/me.jpg" in packages/web/public/ to show your photo
   links: {
-    github: "https://github.com/",
-    linkedin: "https://www.linkedin.com/",
+    github: "https://github.com/jayson-clark",
+    linkedin: "https://www.linkedin.com/", // replace with your real LinkedIn
     resume: "/resume.pdf",
   },
 };
@@ -22,20 +22,20 @@ export type Experience = {
 
 export const experience: Experience[] = [
   {
-    role: "Software Engineering Intern",
-    company: "Company Name",
-    period: "Summer 2025",
-    description:
-      "Built internal tooling and shipped user-facing features across the stack. Replace this copy with a real bullet or two about what you actually did.",
-    tags: ["TypeScript", "React", "Node.js"],
-  },
-  {
-    role: "Undergraduate Research Assistant",
-    company: "University Lab",
+    role: "Teaching Assistant",
+    company: "The Ohio State University",
     period: "2024 — Present",
     description:
-      "Placeholder: describe the research, your contributions, and any papers, demos, or systems you built.",
-    tags: ["C++", "Graphics", "Research"],
+      "Support engineering courses by helping students with programming, embedded systems, debugging, and project development. Also contributed to course infrastructure and helped develop software and communication systems for student robot controllers.",
+    tags: ["C", "C++", "Embedded Systems", "Teaching"],
+  },
+  {
+    role: "Undergraduate Student Developer",
+    company: "Personal & Academic Projects",
+    period: "2023 — Present",
+    description:
+      "Built projects across graphics, web, embedded systems, and tooling, including a 3D graphics engine, plugin-based software systems, robotics software, and full-stack application ideas focused on clean architecture and performance.",
+    tags: ["TypeScript", "C++", "React", "Systems"],
   },
 ];
 
@@ -49,26 +49,25 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    name: "Circuit Background",
+    name: "3D Graphics Engine",
     blurb:
-      "Procedural animated circuit-board background with interactive pulse lighting. Written in TypeScript on a 2D canvas, the component driving this page.",
-    tags: ["TypeScript", "Canvas", "React"],
-    github: "https://github.com/",
+      "Built a 3D graphics engine from scratch in C/C++ and used it in a game project. The project involved rendering, engine architecture, and gameplay integration, and it was part of an award-winning showcase project.",
+    tags: ["C++", "Graphics", "Game Engine"],
+    github: "https://github.com/jayson-clark",
   },
   {
-    name: "Project Two",
+    name: "Robot Controller Communication System",
     blurb:
-      "Placeholder — short blurb about what this project does, why it's interesting, and what you learned building it.",
-    tags: ["Go", "Systems"],
-    github: "https://github.com/",
-    demo: "#",
+      "Worked on a custom robot controller and communication system for an engineering course, involving embedded hardware, controller software, and communication between devices for student robotics projects.",
+    tags: ["Embedded Systems", "ESP32", "Arduino", "C++"],
+    github: "https://github.com/jayson-clark",
   },
   {
-    name: "Project Three",
+    name: "Plugin-Based Software Platform",
     blurb:
-      "Placeholder — a third project to fill out the grid. Swap in your favorite work.",
-    tags: ["Python", "ML"],
-    github: "https://github.com/",
+      "Designed and built modular software systems with dynamically loaded plugins, custom widgets, pages, and database-backed functionality. Focused on extensibility, architecture, and clean interfaces for adding new features.",
+    tags: ["Node.js", "PostgreSQL", "Architecture", "Plugins"],
+    github: "https://github.com/jayson-clark",
   },
 ];
 
@@ -78,12 +77,12 @@ export type Course = {
 };
 
 export const coursework: Course[] = [
-  { code: "CS 225", title: "Data Structures" },
-  { code: "CS 374", title: "Algorithms & Models of Computation" },
-  { code: "CS 233", title: "Computer Architecture" },
-  { code: "CS 241", title: "Systems Programming" },
-  { code: "CS 418", title: "Interactive Computer Graphics" },
-  { code: "CS 411", title: "Database Systems" },
-  { code: "CS 421", title: "Programming Languages" },
-  { code: "MATH 415", title: "Applied Linear Algebra" },
+  { code: "CSE 3341", title: "Principles of Programming Languages" },
+  { code: "CSE 2321", title: "Foundations I: Discrete Structures" },
+  { code: "CSE 2331", title: "Foundations II: Data Structures & Algorithms" },
+  { code: "CSE 2421", title: "Systems I: Introduction to Low-Level Programming and Computer Organization" },
+  { code: "MATH 3345", title: "Foundations of Higher Mathematics" },
+  { code: "MATH 3345H", title: "Honors Foundations of Higher Mathematics" }, // keep only if applicable
+  { code: "MATH 4181H", title: "Honors Real Analysis I" }, // adjust if your exact course number differs
+  { code: "STAT", title: "Probability / Statistics Coursework" }, // replace with exact course if you want
 ];
