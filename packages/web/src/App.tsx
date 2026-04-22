@@ -1,20 +1,59 @@
+import { useEffect } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CircuitBackground } from "@portfolio/circuit-bg";
+import "./styles.css";
+import { Nav } from "./components/Nav";
+import { Hero } from "./sections/Hero";
+import { Experience } from "./sections/Experience";
+import { Projects } from "./sections/Projects";
+import { Coursework } from "./sections/Coursework";
+import { profile } from "./data";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export function App() {
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.utils.toArray<HTMLElement>(".reveal").forEach((el) => {
+        gsap.to(el, {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        });
+      });
+
+      gsap.from(".nav", {
+        y: -20,
+        opacity: 0,
+        duration: 0.8,
+        delay: 0.2,
+        ease: "power3.out",
+      });
+    });
+    return () => ctx.revert();
+  }, []);
+
   return (
     <>
       <CircuitBackground />
-      <main
-        style={{
-          minHeight: "200vh",
-          display: "grid",
-          placeItems: "center",
-          color: "#e2f4f7",
-          fontFamily: "ui-sans-serif, system-ui, sans-serif",
-        }}
-      >
-        <h1 style={{ fontSize: "3rem", margin: 0 }}>Hello, world!</h1>
+      <Nav />
+      <main>
+        <Hero />
+        <Experience />
+        <Projects />
+        <Coursework />
       </main>
+      <footer>
+        © {new Date().getFullYear()} {profile.name} · Built with React, GSAP,
+        and a hand-rolled circuit canvas.
+      </footer>
     </>
   );
 }

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@portfolio/circuit-bg": "workspace:*",
+    "gsap": "^3.15.0",
     "react": "catalog:",
     "react-dom": "catalog:"
   },

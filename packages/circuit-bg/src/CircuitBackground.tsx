@@ -37,7 +37,7 @@ export function CircuitBackground({
   lineWidth = 0.5,
   density = 0.6,
   seed,
-  dimAlpha = 0.01,
+  dimAlpha = 0.05,
   cursorRadius = 15,
   emitInterval = 0.11,
   pulseSpeed = 100,
