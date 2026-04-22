@@ -66,12 +66,18 @@ export function CircuitBackground({
       lastW: number;
       lastH: number;
       cursor: { x: number; y: number; active: boolean };
+      clientX: number;
+      clientY: number;
+      hasClient: boolean;
     } = {
       lighting: null,
       dpr: 1,
       lastW: 0,
       lastH: 0,
       cursor: { x: -99999, y: -99999, active: false },
+      clientX: 0,
+      clientY: 0,
+      hasClient: false,
     };
 
     const lightingOpts = {
@@ -162,6 +168,9 @@ export function CircuitBackground({
     };
 
     const onMove = (e: MouseEvent) => {
+      state.clientX = e.clientX;
+      state.clientY = e.clientY;
+      state.hasClient = true;
       state.cursor.x = e.pageX;
       state.cursor.y = e.pageY;
       state.cursor.active = true;
@@ -171,6 +180,12 @@ export function CircuitBackground({
       state.cursor.active = false;
       scheduleFrame();
     };
+    const onScroll = () => {
+      if (!state.hasClient) return;
+      state.cursor.x = state.clientX + window.scrollX;
+      state.cursor.y = state.clientY + window.scrollY;
+      if (state.cursor.active) scheduleFrame();
+    };
 
     buildScene(true);
     paint();
@@ -178,6 +193,7 @@ export function CircuitBackground({
     window.addEventListener("mousemove", onMove);
     document.addEventListener("mouseleave", onLeave);
     window.addEventListener("blur", onLeave);
+    window.addEventListener("scroll", onScroll, { passive: true });
 
     let resizeTimer = 0;
     const scheduleResize = () => {
@@ -198,6 +214,7 @@ export function CircuitBackground({
       window.removeEventListener("mousemove", onMove);
       document.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("blur", onLeave);
+      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", scheduleResize);
     };
   }, [
