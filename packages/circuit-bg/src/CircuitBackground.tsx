@@ -1,10 +1,11 @@
 import { useEffect, useRef, type CSSProperties } from "react";
 import { generate } from "./generate";
 import {
+  createLightingState,
   drawLighting,
-  precomputeTraces,
+  precomputeScene,
   updateLighting,
-  type TraceDraw,
+  type LightingState,
 } from "./lighting";
 import { render } from "./render";
 
@@ -17,11 +18,13 @@ export type CircuitBackgroundProps = {
   density?: number;
   seed?: number;
   dimAlpha?: number;
-  perpFalloff?: number;
-  sigma?: number;
-  tau?: number;
-  chaseTau?: number;
-  injectRate?: number;
+  cursorRadius?: number;
+  emitInterval?: number;
+  pulseSpeed?: number;
+  maxPulseHops?: number;
+  pulseThickness?: number;
+  pulseLife?: number;
+  fadeTau?: number;
   style?: CSSProperties;
   className?: string;
 };
@@ -31,15 +34,17 @@ export function CircuitBackground({
   color = "#22d3ee",
   backgroundColor = "#0a1620",
   chipColor,
-  lineWidth = 1.1,
+  lineWidth = 0.5,
   density = 0.6,
   seed,
   dimAlpha = 0.01,
-  perpFalloff = 55,
-  sigma = 50,
-  tau = 0.5,
-  chaseTau = 0.14,
-  injectRate = 5,
+  cursorRadius = 15,
+  emitInterval = 0.11,
+  pulseSpeed = 100,
+  maxPulseHops = 15,
+  pulseThickness = 14,
+  pulseLife = 1.5,
+  fadeTau = 0.15,
   style,
   className,
 }: CircuitBackgroundProps) {
@@ -55,23 +60,30 @@ export function CircuitBackground({
     const baseCtx = baseCanvas.getContext("2d");
     if (!baseCtx) return;
 
-    const state = {
-      traces: [] as TraceDraw[],
+    const state: {
+      lighting: LightingState | null;
+      dpr: number;
+      lastW: number;
+      lastH: number;
+      cursor: { x: number; y: number; active: boolean };
+    } = {
+      lighting: null,
       dpr: 1,
       lastW: 0,
       lastH: 0,
       cursor: { x: -99999, y: -99999, active: false },
-      lastFrame: 0,
     };
 
     const lightingOpts = {
       color,
       lineWidth,
-      perpFalloff,
-      sigma,
-      tau,
-      chaseTau,
-      injectRate,
+      cursorRadius,
+      emitInterval,
+      pulseSpeed,
+      maxPulseHops,
+      pulseThickness,
+      pulseLife,
+      fadeTau,
     };
 
     const getDocSize = () => {
@@ -117,7 +129,8 @@ export function CircuitBackground({
       baseCtx.fillRect(0, 0, w, h);
       baseCtx.globalAlpha = 1;
 
-      state.traces = precomputeTraces(data, cellSize);
+      const scene = precomputeScene(data, cellSize);
+      state.lighting = createLightingState(scene);
       return true;
     };
 
@@ -126,7 +139,7 @@ export function CircuitBackground({
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(baseCanvas, 0, 0);
       ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
-      drawLighting(ctx, state.traces, lightingOpts);
+      if (state.lighting) drawLighting(ctx, state.lighting, lightingOpts);
     };
 
     let rafId = 0;
@@ -134,25 +147,18 @@ export function CircuitBackground({
       if (rafId) return;
       rafId = requestAnimationFrame(tick);
     };
-    const tick = (now: number) => {
+    const tick = (nowMs: number) => {
       rafId = 0;
-      const dtMs =
-        state.lastFrame === 0 ? 16 : Math.min(now - state.lastFrame, 100);
-      state.lastFrame = now;
-      const dt = dtMs / 1000;
-
+      if (!state.lighting) return;
+      const now = nowMs / 1000;
       const hasLight = updateLighting(
-        state.traces,
+        state.lighting,
         state.cursor,
-        dt,
+        now,
         lightingOpts,
       );
       paint();
-      if (hasLight || state.cursor.active) {
-        scheduleFrame();
-      } else {
-        state.lastFrame = 0;
-      }
+      if (hasLight || state.cursor.active) scheduleFrame();
     };
 
     const onMove = (e: MouseEvent) => {
@@ -203,11 +209,13 @@ export function CircuitBackground({
     density,
     seed,
     dimAlpha,
-    perpFalloff,
-    sigma,
-    tau,
-    chaseTau,
-    injectRate,
+    cursorRadius,
+    emitInterval,
+    pulseSpeed,
+    maxPulseHops,
+    pulseThickness,
+    pulseLife,
+    fadeTau,
   ]);
 
   return (

@@ -4,8 +4,13 @@ export { generate } from "./generate";
 export type { GenerateOptions } from "./generate";
 export { render } from "./render";
 export type { RenderOptions } from "./render";
-export { drawLighting, precomputeTraces, updateLighting } from "./lighting";
-export type { LightingOptions, TraceDraw } from "./lighting";
+export {
+  createLightingState,
+  drawLighting,
+  precomputeScene,
+  updateLighting,
+} from "./lighting";
+export type { LightingOptions, LightingState, Scene } from "./lighting";
 export type {
   CircuitData,
   Chip,
