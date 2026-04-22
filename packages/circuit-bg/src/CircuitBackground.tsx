@@ -31,10 +31,34 @@ export function CircuitBackground({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    const getDocSize = () => {
+      const docEl = document.documentElement;
+      const body = document.body;
+      const w = Math.max(
+        docEl.clientWidth,
+        docEl.scrollWidth,
+        body.scrollWidth,
+      );
+      const h = Math.max(
+        docEl.clientHeight,
+        docEl.scrollHeight,
+        body.scrollHeight,
+      );
+      return { w, h };
+    };
+
+    let lastW = 0;
+    let lastH = 0;
+
     const draw = () => {
-      const w = canvas.clientWidth;
-      const h = canvas.clientHeight;
+      const { w, h } = getDocSize();
       if (w === 0 || h === 0) return;
+      if (w === lastW && h === lastH) return;
+      lastW = w;
+      lastH = h;
+
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.floor(w * dpr);
       canvas.height = Math.floor(h * dpr);
@@ -57,15 +81,20 @@ export function CircuitBackground({
     draw();
 
     let timer = 0;
-    const ro = new ResizeObserver(() => {
+    const schedule = () => {
       window.clearTimeout(timer);
       timer = window.setTimeout(draw, 150);
-    });
-    ro.observe(canvas);
+    };
+
+    const ro = new ResizeObserver(schedule);
+    ro.observe(document.documentElement);
+    ro.observe(document.body);
+    window.addEventListener("resize", schedule);
 
     return () => {
       ro.disconnect();
       window.clearTimeout(timer);
+      window.removeEventListener("resize", schedule);
     };
   }, [cellSize, color, backgroundColor, chipColor, lineWidth, density, seed]);
 
@@ -75,10 +104,9 @@ export function CircuitBackground({
       aria-hidden
       className={className}
       style={{
-        position: "fixed",
-        inset: 0,
-        width: "100vw",
-        height: "100vh",
+        position: "absolute",
+        top: 0,
+        left: 0,
         zIndex: -1,
         pointerEvents: "none",
         display: "block",
