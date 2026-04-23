@@ -3,7 +3,7 @@ import { projects } from "../data";
 export function Projects() {
   return (
     <section id="projects">
-      <div className="section-label reveal">03 — Projects</div>
+      <div className="section-label reveal">04 — Projects</div>
       <h2 className="section-title reveal">Things I've built</h2>
       <div className="cards-grid">
         {projects.map((p) => (

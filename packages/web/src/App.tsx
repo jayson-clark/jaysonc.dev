@@ -5,6 +5,7 @@ import { CircuitBackground } from "@portfolio/circuit-bg";
 import "./styles.css";
 import { Nav } from "./components/Nav";
 import { Hero } from "./sections/Hero";
+import { Education } from "./sections/Education";
 import { Experience } from "./sections/Experience";
 import { Projects } from "./sections/Projects";
 import { Coursework } from "./sections/Coursework";
@@ -45,6 +46,7 @@ export function App() {
       <Nav />
       <main>
         <Hero />
+        <Education />
         <Experience />
         <Projects />
         <Coursework />
