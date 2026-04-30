@@ -8,7 +8,7 @@ export const profile = {
   links: {
     github: "https://github.com/jayson-clark",
     linkedin: "https://www.linkedin.com/in/jayson-clark-328201217/", // replace with your real LinkedIn
-    resume: "/resume.pdf",
+    resume: "/jayson_clark_resume.pdf",
   },
 };
 
@@ -49,28 +49,36 @@ export type Experience = {
 
 export const experience: Experience[] = [
   {
-    role: "Teaching Associate",
+    role: "Lead Teaching Associate",
     company: "The Ohio State University",
     period: "Aug 2024 — Present",
     description:
-      "Led development of a communication system between student robots and the robotics course software, including related libraries. Work closely with students to teach and troubleshoot Excel, MATLAB, and C/C++ assignments while supporting their understanding of core engineering concepts and teamwork.",
-    tags: ["C", "C++", "MATLAB", "Embedded Systems", "Teaching"],
+    "Led firmware development for a custom microcontroller-based robot platform, enabling real-time position tracking, remote kill signals, and robot authentication for automatic scoring. Also developed the C#/OpenCV course software that tracks student robots via AruCo markers, communicates with on-robot firmware over a custom protocol, and powers automatic scoring and a live leaderboard for the course competition — software, firmware, and microcontrollers that support around 300 students every year. As the lead TA on the microcontroller team, troubleshoot and repair microcontrollers for each student team whenever issues arise. Support students throughout their robot design projects, mentoring them on software development, CAD, and overall design. Teach Excel, MATLAB, C/C++, and CAD assignments while reinforcing core engineering concepts and teamwork.",
+    tags: ["C#", "C++", "OpenCV", "AruCo", "MATLAB", "CAD", "Networking", "Embedded Systems", "Teaching"],
+  },
+  {
+    role: "Founder / Full-Stack Developer",
+    company: "Polsar LLC",
+    period: "March 2026 — Present",
+    description:
+      "Founded and am building Polsar, an early-stage white-label order processing platform for restaurants. Developing custom storefronts, order management, staff dashboards, Stripe-based payments, and multi-tenant infrastructure designed for reusable deployment across multiple businesses. Currently building the MVP and onboarding the first client.",
+    tags: ["TypeScript", "React Native", "Node.js", "OpenAPI", "Stripe", "Full-Stack"],
   },
   {
     role: "Independent Full-Stack Developer",
     company: "Pizza Shack (Freelance Client)",
-    period: "Nov 2022 — Present",
+    period: "Nov 2022 — May 2024",
     description:
-      "Contracted independently by the owner to design and ship a complete order processing platform from scratch, including a customer mobile app and public-facing website. Integrated secure payment processing, a Python-driven automatic order-ticket printing pipeline, and a hardened database layer. Operate under an ongoing retainer, scoping requirements directly with the client and shipping maintenance and new features as the shop's operations evolve.",
-    tags: ["Full-Stack", "Mobile", "Python", "Payments", "Databases"],
+      "Contracted independently by the owner to design and ship a complete order processing platform from scratch, including a customer mobile app and public-facing website that has processed close to 2,000 orders to date. Integrated secure payment processing, a Python-driven automatic order-ticket printing pipeline, and a secure database layer. Operate under an ongoing retainer, scoping requirements directly with the client and shipping maintenance and new features as the shop's operations evolve.",
+    tags: ["Full-Stack", "Flutter", "Mobile", "Python", "Payments", "Databases"],
   },
   {
-    role: "Web Developer Intern",
+    role: "Web Development Intern",
     company: "A Special Wish — Ohio Valley",
-    period: "Sep 2022 — Present",
+    period: "Sep 2022 — August 2024",
     description:
       "Rebuilt the organization's website architecture from the ground up to improve maintainability and streamline content updates. Designed and implemented a custom CMS so the director and marketing team can publish updates without any coding knowledge, and work directly with the director to align site functionality with organizational goals.",
-    tags: ["Web", "CMS", "JavaScript", "Nonprofit"],
+    tags: ["Web", "CMS", "JavaScript", "Firebase", "Nonprofit"],
   },
 ];
 
@@ -84,25 +92,29 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    name: "3D Graphics Engine",
+    name: "Rendor — JSON Schema-Driven UI",
     blurb:
-      "Built a 3D graphics engine from scratch in C/C++ and used it in a game project. The project involved rendering, engine architecture, and gameplay integration, and it was part of an award-winning showcase project.",
-    tags: ["C++", "Graphics", "Game Engine"],
-    github: "https://github.com/jayson-clark",
+      "Built Rendor, a JSON schema-driven UI system that enables server-driven UIs across React and React Native applications. Includes a custom expression engine for dynamic logic, a template system for reusable components, and a renderer that interprets JSON definitions into fully interactive interfaces — letting backends ship UI updates without redeploying clients.",
+    tags: ["TypeScript", "React", "React Native", "JSON Schema", "Server-Driven UI"],
+    github: "https://github.com/jayson-clark/rendor",
   },
   {
     name: "Robot Controller Communication System",
     blurb:
-      "Worked on a custom robot controller and communication system for an engineering course, involving embedded hardware, controller software, and communication between devices for student robotics projects.",
+      "Led the development of firmware for a custom microcontroller and communication system for an engineering course. Enabled real time position tracking for robots, remote kill signals, and robot authentication for automatic scoring systems.",
     tags: ["Embedded Systems", "ESP32", "Arduino", "C++"],
-    github: "https://github.com/jayson-clark",
   },
   {
-    name: "Plugin-Based Software Platform",
+    name: "Robot Course Software",
     blurb:
-      "Designed and built modular software systems with dynamically loaded plugins, custom widgets, pages, and database-backed functionality. Focused on extensibility, architecture, and clean interfaces for adding new features.",
-    tags: ["Node.js", "PostgreSQL", "Architecture", "Plugins"],
-    github: "https://github.com/jayson-clark",
+      "Developed the software system for controlling and tracking student robots in a robotics competition course. Built a C# application that uses AruCo markers and OpenCV to track robot positions in real time, a communication system to send position data and commands to the robots, and automatic scoring and a live leaderboard for the course competition.",
+    tags: ["Embedded Systems", "ESP32", "Arduino", "C++"],
+  },
+  {
+    name: "3D Graphics Engine",
+    blurb:
+      "Built a 3D graphics engine from scratch in C/C++ and used it in a game project. The project involved rendering, engine architecture, and gameplay integration, and it was part of an award-winning showcase project.",
+    tags: ["C++", "Graphics", "Game Engine"],
   },
   {
     name: "Empirica — CalHacks (Regeneron Track, Honorable Mention)",
@@ -154,12 +166,30 @@ export type Course = {
 };
 
 export const coursework: Course[] = [
-  { code: "CSE 3341", title: "Principles of Programming Languages" },
+  // Computer Science
+  { code: "CSE 2221", title: "Software I: Software Components" },
+  { code: "CSE 2231", title: "Software II: Software Development & Design" },
   { code: "CSE 2321", title: "Foundations I: Discrete Structures" },
   { code: "CSE 2331", title: "Foundations II: Data Structures & Algorithms" },
   { code: "CSE 2421", title: "Systems I: Introduction to Low-Level Programming and Computer Organization" },
-  { code: "MATH 3345", title: "Foundations of Higher Mathematics" },
-  { code: "MATH 3345H", title: "Honors Foundations of Higher Mathematics" }, // keep only if applicable
-  { code: "MATH 4181H", title: "Honors Real Analysis I" }, // adjust if your exact course number differs
-  { code: "STAT", title: "Probability / Statistics Coursework" }, // replace with exact course if you want
+  { code: "CSE 2431", title: "Systems II: Operating Systems" },
+  { code: "CSE 3241", title: "Introduction to Database Systems" },
+  { code: "CSE 3341", title: "Principles of Programming Languages" },
+  { code: "CSE 3461", title: "Computer Networking" },
+  { code: "CSE 3521", title: "Introduction to Artificial Intelligence" },
+  { code: "CSE 3901", title: "Project: Web Applications" },
+  { code: "CSE 5351", title: "Introduction to Cryptography" },
+
+  // Math / Statistics
+  { code: "MATH 2153", title: "Calculus III" },
+  { code: "MATH 2255", title: "Differential Equations" },
+  { code: "MATH 2568", title: "Linear Algebra" },
+  { code: "MATH 3345H", title: "Honors Foundations of Higher Mathematics" },
+  { code: "MATH 4547", title: "Introduction to Analysis I" },
+  { code: "MATH 4548", title: "Introduction to Analysis II" },
+  { code: "MATH 4580", title: "Abstract Algebra I" },
+  { code: "MATH 5051", title: "Introduction to Mathematical Logic" },
+  { code: "MATH 5101", title: "Finite Linear Mathematics" },
+  { code: "STAT 4201", title: "Introduction to Mathematical Statistics I" },
+  { code: "STAT 4202", title: "Introduction to Mathematical Statistics II" },
 ];
