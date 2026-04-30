@@ -81,12 +81,38 @@ p {
   padding: 8px 14px;
   border-radius: 999px;
   transition: background 0.2s ease, color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .nav a:hover {
   background: var(--accent-soft);
   color: var(--accent);
   text-decoration: none;
+}
+
+.nav-icon {
+  flex-shrink: 0;
+}
+
+.nav-label {
+  display: inline;
+}
+
+@media (max-width: 640px) {
+  .nav {
+    gap: 2px;
+    padding: 6px;
+  }
+
+  .nav a {
+    padding: 8px;
+  }
+
+  .nav-label {
+    display: none;
+  }
 }
 
 main {
