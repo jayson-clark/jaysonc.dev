@@ -317,6 +317,7 @@ section {
 
 .course {
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
   padding: 12px 14px;
@@ -334,6 +335,8 @@ section {
 }
 
 .course-code {
+  flex-shrink: 0;
+  white-space: nowrap;
   color: var(--accent);
   font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.78rem;
